@@ -1,11 +1,11 @@
 import { appActions, appReducer, RequestStatusType } from "./app-reducer";
 
-const initialState = {
+const initialStateApp = {
 	status: "idle" as RequestStatusType,
 	error: null as string | null,
 	isInitialized: false
 };
-type InitialStateType = typeof initialState
+type InitialStateType = typeof initialStateApp
 let startState: InitialStateType;
 
 beforeEach(() => {
