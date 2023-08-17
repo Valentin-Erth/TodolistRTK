@@ -1,5 +1,5 @@
 import { authAPI } from "../api/todolists-api";
-import { authActions } from "../features/Login/auth-reducer";
+import { authActions } from "features/Login/auth.slice";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppThunk } from "./store";
 
@@ -43,5 +43,5 @@ export const initializeAppTC = ():AppThunk => (dispatch) => {
 
 export type RequestStatusType = "idle" | "loading" | "succeeded" | "failed"
 export const appActions=slice.actions
-export const appReducer=slice.reducer
+export const appSlice=slice.reducer
 

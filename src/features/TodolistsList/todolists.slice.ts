@@ -1,8 +1,8 @@
 import { todolistsAPI, TodolistType } from "../../api/todolists-api";
-import { appActions, RequestStatusType } from "../../app/app-reducer";
+import { appActions, RequestStatusType } from "app/app.slice";
 import { handleServerNetworkError } from "../../utils/error-utils";
 import { AppThunk } from "../../app/store";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
 
 const initialState: Array<TodolistDomainType> = [];
 const slice = createSlice({
@@ -14,11 +14,17 @@ const slice = createSlice({
       if (index !== -1) state.splice(index, 1);
     },
     addTodolist: (state, action: PayloadAction<{ todolist: TodolistType }>) => {
+      console.log(current(state))
       state.unshift({ ...action.payload.todolist, filter: "all", entityStatus: "idle" });
     },
     changeTodolistTitle: (state, action: PayloadAction<{ id: string, title: string }>) => {
-      const index = state.findIndex(todo => todo.id === action.payload.id);
-      if (index !== -1) state[index].title = action.payload.title;
+      // const index = state.findIndex(todo => todo.id === action.payload.id);
+      // if (index !== -1) state[index].title = action.payload.title;
+
+      const todo=state.find((todo)=>todo.id===action.payload.id)
+      if(todo){
+        todo.title=action.payload.title
+      }
     },
     changeTodolistFilter: (state, action: PayloadAction<{ id: string, filter: FilterValuesType }>) => {
       const index = state.findIndex(todo => todo.id === action.payload.id);
@@ -29,6 +35,7 @@ const slice = createSlice({
       if (index !== -1) state[index].entityStatus = action.payload.entityStatus;
     },
     setTodolists: (state, action: PayloadAction<{ todolists: TodolistType[]}>) => {
+
      return action.payload.todolists.map(tl => ({ ...tl, filter: "all", entityStatus: "idle" }))
     },
   }
@@ -88,5 +95,5 @@ export type TodolistDomainType = TodolistType & {
   filter: FilterValuesType
   entityStatus: RequestStatusType
 }
-export const todolistsReducer = slice.reducer;
+export const todolistsSlice = slice.reducer;
 export const todolistsActions = slice.actions;

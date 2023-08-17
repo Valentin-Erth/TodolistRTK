@@ -1,4 +1,4 @@
-import { appActions, appReducer, RequestStatusType } from "./app-reducer";
+import { appActions, appSlice, RequestStatusType } from "app/app.slice";
 
 const initialStateApp = {
 	status: "idle" as RequestStatusType,
@@ -17,12 +17,12 @@ beforeEach(() => {
 })
 
 test('correct error message should be set', () => {
-	const endState = appReducer(startState, appActions.setAppError({error:'some error'}))
+	const endState = appSlice(startState, appActions.setAppError({error:'some error'}))
 	expect(endState.error).toBe('some error');
 })
 
 test('correct status should be set', () => {
-	const endState = appReducer(startState, appActions.setAppStatus({status: "loading" }))
+	const endState = appSlice(startState, appActions.setAppStatus({status: "loading" }))
 	expect(endState.status).toBe('loading');
 })
 
