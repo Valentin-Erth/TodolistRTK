@@ -1,9 +1,10 @@
-import { appActions, appSlice, RequestStatusType } from "app/app.slice";
+import { appActions, appSlice, RequestStatusType, ThemeType } from "app/app.slice";
 
 const initialStateApp = {
 	status: "idle" as RequestStatusType,
 	error: null as string | null,
-	isInitialized: false
+	isInitialized: false,
+	theme: 'light' as ThemeType,
 };
 type InitialStateType = typeof initialStateApp
 let startState: InitialStateType;
@@ -12,7 +13,8 @@ beforeEach(() => {
 	startState = {
 		error: null,
 		status: 'idle',
-		isInitialized: false
+		isInitialized: false,
+		theme: 'light'
 	}
 })
 

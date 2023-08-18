@@ -1,4 +1,4 @@
-import { authAPI } from "../api/todolists-api";
+import { authAPI } from "api/todolists-api";
 import { authActions } from "features/Login/auth.slice";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppThunk } from "./store";
@@ -9,13 +9,14 @@ import { AppThunk } from "./store";
 //   isInitialized: false
 // };
 // export type InitialStateType = typeof initialState
-
+export type ThemeType='light' | 'dark'
 const slice = createSlice({
   name: "app",
   initialState: {
     status: "idle" as RequestStatusType,
     error: null as string | null,
-    isInitialized: false
+    isInitialized: false,
+    theme: 'light' as ThemeType,
   },
   reducers: {
     setAppError: (state, action: PayloadAction<{ error: string| null }>) => {
@@ -26,6 +27,9 @@ const slice = createSlice({
     },
     setAppInitialized: (state, action:PayloadAction<{isInitialized: boolean}>)=>{
       state.isInitialized=action.payload.isInitialized
+    },
+    setTheme:(state, action: PayloadAction<{theme: ThemeType }>)=>{
+      state.theme=action.payload.theme
     }
   }
 });
