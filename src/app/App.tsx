@@ -22,6 +22,7 @@ import { Menu } from "@mui/icons-material";
 import { selectIsInitialized, selectStatus, themeSelector } from "app/app.selectors";
 import { selectIsLoggedIn } from "features/Login/auth.selectors";
 import { darkTheme, lightTheme } from "common/theme/theme";
+import { loadTheme } from "common/utils/localStorage-utils";
 
 type PropsType = {
   demo?: boolean;
@@ -36,7 +37,7 @@ function App({ demo = false }: PropsType) {
   const dispatch = useDispatch<any>();
 
   useLayoutEffect(() => {
-    dispatch(appActions.setTheme({theme: "light" }));
+    dispatch(appActions.setTheme(loadTheme()));
   }, []);
 
   useEffect(() => {
