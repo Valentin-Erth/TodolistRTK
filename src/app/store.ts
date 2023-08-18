@@ -23,7 +23,6 @@ export const store = configureStore({
 store.subscribe(() => {
   saveTheme(store.getState().app.theme);
 });
-// export const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
 // определить автоматически тип всего объекта состояния
 export type AppRootStateType = ReturnType<typeof store.getState>
 
@@ -33,6 +32,5 @@ export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, AppRootStateTy
 export type AppDispatch = ThunkDispatch<AppRootStateType, unknown, AnyAction>
 
 
-// а это, чтобы можно было в консоли браузера обращаться к store в любой момент
 // @ts-ignore
 window.store = store;
