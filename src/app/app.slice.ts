@@ -1,7 +1,9 @@
 import { authAPI } from "api/todolists-api";
 import { authActions } from "features/Login/auth.slice";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppThunk } from "./store";
+import { handleServerNetworkError } from "utils/error-utils";
+import { AxiosError } from "axios";
 
 // const initialState = {
 //   status: "idle" as RequestStatusType,
@@ -35,18 +37,24 @@ const slice = createSlice({
   }
 });
 
-export const initializeAppTC = (): AppThunk => (dispatch) => {
-  authAPI.me()
-    .then(res => {
-      if (res.data.resultCode === 0) {
-        dispatch(authActions.setIsLoggedIn({ isLoggedIn: true }));
-      } else {
-      }
-      dispatch(appActions.setAppInitialized({ isInitialized: true }));
-    });
-};
-
+export const initializeApp = createAsyncThunk("app/initializeApp", async (_, { dispatch }) => {
+  dispatch(appActions.setAppStatus({ status: "loading" }));
+  try {
+    const res = await authAPI.me();
+    if (res.data.resultCode === 0) {
+      dispatch(authActions.setIsLoggedIn({ isLoggedIn: true }));
+      dispatch(appActions.setAppStatus({ status: "succeeded" }));
+    } else {
+      dispatch(appActions.setAppStatus({ status: "failed" }));
+    }
+  } catch (e) {
+    handleServerNetworkError(e as AxiosError, dispatch);
+  } finally {
+    dispatch(appActions.setAppInitialized({ isInitialized: true }));
+  }
+})
 export type RequestStatusType = "idle" | "loading" | "succeeded" | "failed"
 export const appActions = slice.actions;
 export const appSlice = slice.reducer;
 
+export const appThunks={initializeApp}

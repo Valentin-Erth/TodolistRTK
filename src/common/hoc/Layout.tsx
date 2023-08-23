@@ -8,10 +8,11 @@ import { LayoutWrapper, MainWrapper } from "common/hoc/styled";
 import { Todolists } from "features/TodolistsList/TodolistsList";
 import React from 'react';
 import { todolistsThunks } from "features/TodolistsList/todolists.slice";
+import { selectIsLoggedIn } from "features/Login/auth.selectors";
 
 
 export const Layout = () => {
-  const isLoggedIn = useSelector(selectStatus)
+  const isLoggedIn = useSelector(selectIsLoggedIn)
   const dispatch = useAppDispatch()
 
   useEffect(() => {

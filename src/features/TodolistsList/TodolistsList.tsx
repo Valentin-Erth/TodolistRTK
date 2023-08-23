@@ -7,7 +7,6 @@ import { useAppDispatch } from "common/hooks/useAppDispatch";
 
 import { selectTodolists } from "features/TodolistsList/todolist.selectors";
 import { themeSelector } from "app/app.selectors";
-import { logoutTC } from "features/Login/auth.slice";
 import { DragDropContext, Draggable, Droppable, DropResult } from "react-beautiful-dnd";
 import { appActions } from "app/app.slice";
 import {
@@ -20,6 +19,7 @@ import {
 import { TodoLink } from "features/TodolistsList/TodoLink/TodoLink";
 import { PortalModal, Toggle } from "components";
 import { AddTodoModal } from "features/TodolistsList/AddTodoModal/AddTodoModal";
+import { authThunks } from "features/Login/auth.slice";
 
 
 
@@ -30,7 +30,7 @@ export const Todolists= () => {
   const dispatch = useAppDispatch();
 
   const [showModal, setShowModal] = useState(false)
-  const handlerLogOut = () => dispatch(logoutTC())
+  const handlerLogOut = () => dispatch(authThunks.logout())
   const handlerOpenModal = () => setShowModal(true)
   const handlerDragEnd = (result: DropResult) => {
     if (!result.destination) return

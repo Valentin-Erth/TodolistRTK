@@ -1,20 +1,19 @@
-import React, { ChangeEvent, useCallback, useEffect, useLayoutEffect } from "react";
+import React, { useEffect, useLayoutEffect } from "react";
 import "./App.css";
 import { ThemeProvider } from "styled-components";
-
 import { ErrorSnackbar } from "components/ErrorSnackbar/ErrorSnackbar";
-import { useDispatch, useSelector } from "react-redux";
-import { appActions, initializeAppTC } from "app/app.slice";
-import { logoutTC } from "features/Login/auth.slice";
+import { useSelector } from "react-redux";
+import { appActions, appThunks } from "app/app.slice";
 import {
-    CircularProgress,
-   LinearProgress,
+    CircularProgress,LinearProgress
   } from "@mui/material";
 import { selectIsInitialized, selectStatus, themeSelector } from "app/app.selectors";
 import { selectIsLoggedIn } from "features/Login/auth.selectors";
 import { darkTheme, lightTheme } from "common/theme/theme";
 import { loadTheme } from "common/utils/localStorage-utils";
 import { Pages } from "Pages";
+import { useAppDispatch } from "common/hooks/useAppDispatch";
+import { LinerProgress } from "components/LinerProgress/LinerProgress";
 
 type PropsType = {
   demo?: boolean;
@@ -26,21 +25,17 @@ function App({ demo = false }: PropsType) {
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const theme = useSelector(themeSelector);
   const currentTheme = theme === "light" ? lightTheme : darkTheme;
-  const dispatch = useDispatch<any>();
+  const dispatch = useAppDispatch()
 
   useLayoutEffect(() => {
     dispatch(appActions.setTheme(loadTheme()));
   }, []);
 
   useEffect(() => {
-    dispatch(initializeAppTC());
+    dispatch(appThunks.initializeApp());
   }, []);
 
-  const logoutHandler = useCallback(() => {
-    dispatch(logoutTC());
-  }, []);
-
-  if (!isInitialized) {
+    if (!isInitialized) {
     return (
       <div
         style={{
