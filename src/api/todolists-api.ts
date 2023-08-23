@@ -29,6 +29,14 @@ export const todolistsAPI = {
         const promise = instance.put<ResponseType>(`todo-lists/${id}`, {title: title});
         return promise;
     },
+    reorder(todoId: string, putAfterItemId: string | null) {
+        /**
+         * putAfterItemId: (string)
+         * Target todolist will be order after this todolist.
+         * If value is null, then todolist will be move to the top of the list
+         * */
+        return instance.put(`/todo-lists/${todoId}/reorder`, { putAfterItemId })
+    },
     getTasks(todolistId: string) {
         return instance.get<GetTasksResponse>(`todo-lists/${todolistId}/tasks`);
     },
@@ -39,8 +47,16 @@ export const todolistsAPI = {
         return instance.post<ResponseType<{ item: TaskType}>>(`todo-lists/${todolistId}/tasks`, {title: taskTitile});
     },
     updateTask(todolistId: string, taskId: string, model: UpdateTaskModelType) {
-        return instance.put<ResponseType<TaskType>>(`todo-lists/${todolistId}/tasks/${taskId}`, model);
-    }
+        return instance.put<ResponseType<{ item:TaskType }>>(`todo-lists/${todolistId}/tasks/${taskId}`, model);
+    },
+    reorderTask(todoId: string, taskId: string, putAfterItemId: string | null) {
+        /**
+         * putAfterItemId: (string)
+         * Target todolist will be order after this todolist.
+         * If value is null, then todolist will be move to the top of the list
+         * */
+        return instance.put(`/todo-lists/${todoId}/tasks/${taskId}/reorder`, { putAfterItemId })
+    },
 }
 
 
@@ -82,18 +98,16 @@ export enum TaskStatuses {
     New = 0,
     InProgress = 1,
     Completed = 2,
-    Draft = 3
 }
 export enum TaskPriorities {
-    Low = 0,
-    Middle = 1,
-    Hi = 2,
-    Urgently = 3,
-    Later = 4
-}
+    Low = 1,
+    Medium = 2,
+    High = 3,
+    }
 export type TaskType = {
     description: string
     title: string
+    completed: boolean
     status: TaskStatuses
     priority: TaskPriorities
     startDate: string

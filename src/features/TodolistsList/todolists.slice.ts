@@ -1,8 +1,9 @@
 import { todolistsAPI, TodolistType } from "api/todolists-api";
 import { appActions, RequestStatusType } from "app/app.slice";
 import { handleServerNetworkError } from "utils/error-utils";
-import { AppThunk } from "app/store";
+import { AppRootStateType, AppThunk } from "app/store";
 import { createAsyncThunk, createSlice, current, PayloadAction } from "@reduxjs/toolkit";
+import { AxiosError } from "axios";
 
 const initialState: Array<TodolistDomainType> = [];
 const slice = createSlice({
@@ -99,12 +100,40 @@ export const changeTodolistTitleTC = (id: string, title: string): AppThunk => {
       });
   };
 };
+export const changeOrderTodolistTC = createAsyncThunk(
+  'todosSlice/changeOrderTodoTC',
+  async (data: ChangeOrderTodoType, { dispatch, rejectWithValue, getState }) => {
+    dispatch(appActions.setAppStatus({ status: "loading" }))
+    try {
+      if (data.newTodoIndex === 0) {
+        await todolistsAPI.reorder(data.todoId, null)
+      } else {
+        const { todolists } = getState() as AppRootStateType
+        const idAfterWhichTodo = todolists[data.newTodoIndex - 1].id
+
+        await todolistsAPI.reorder(data.todoId, idAfterWhichTodo)
+      }
+      dispatch(appActions.setAppStatus({status: "succeeded" }))
+
+      return data
+    } catch (e) {
+      handleServerNetworkError(e as AxiosError, dispatch)
+
+      return rejectWithValue(null)
+    }
+  }
+)
 
 // types
 export type FilterValuesType = "all" | "active" | "completed";
 export type TodolistDomainType = TodolistType & {
   filter: FilterValuesType
   entityStatus: RequestStatusType
+}
+export type ChangeOrderTodoType = {
+  todoId: string
+  newTodoIndex: number
+  oldTodoIndex: number
 }
 export const todolistsSlice = slice.reducer;
 export const todolistsActions = slice.actions;

@@ -9,43 +9,44 @@ import { AppThunk } from "./store";
 //   isInitialized: false
 // };
 // export type InitialStateType = typeof initialState
-export type ThemeType='light' | 'dark'
+export type ThemeType = "light" | "dark"
 const slice = createSlice({
   name: "app",
   initialState: {
     status: "idle" as RequestStatusType,
     error: null as string | null,
     isInitialized: false,
-    theme: 'light' as ThemeType,
+    theme: "light" as ThemeType
   },
   reducers: {
-    setAppError: (state, action: PayloadAction<{ error: string| null }>) => {
+    setAppError: (state, action: PayloadAction<{ error: string | null }>) => {
       state.error = action.payload.error;
     },
-    setAppStatus: (state, action:PayloadAction<{status: RequestStatusType}>)=>{
-      state.status=action.payload.status
+    setAppStatus: (state, action: PayloadAction<{ status: RequestStatusType }>) => {
+      state.status = action.payload.status;
     },
-    setAppInitialized: (state, action:PayloadAction<{isInitialized: boolean}>)=>{
-      state.isInitialized=action.payload.isInitialized
+    setAppInitialized: (state, action: PayloadAction<{ isInitialized: boolean }>) => {
+      state.isInitialized = action.payload.isInitialized;
     },
-    setTheme:(state, action: PayloadAction<{theme: ThemeType }>)=>{
-      state.theme=action.payload.theme
+    setTheme: (state, action: PayloadAction<ThemeType>) => {
+      // debugger
+      state.theme = action.payload;
     }
   }
 });
 
-export const initializeAppTC = ():AppThunk => (dispatch) => {
+export const initializeAppTC = (): AppThunk => (dispatch) => {
   authAPI.me()
     .then(res => {
       if (res.data.resultCode === 0) {
         dispatch(authActions.setIsLoggedIn({ isLoggedIn: true }));
       } else {
       }
-      dispatch(appActions.setAppInitialized({isInitialized:true}));
+      dispatch(appActions.setAppInitialized({ isInitialized: true }));
     });
 };
 
 export type RequestStatusType = "idle" | "loading" | "succeeded" | "failed"
-export const appActions=slice.actions
-export const appSlice=slice.reducer
+export const appActions = slice.actions;
+export const appSlice = slice.reducer;
 

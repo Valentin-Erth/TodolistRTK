@@ -1,4 +1,4 @@
-import { tasksSlice } from "features/TodolistsList/tasks.slice";
+import { tasksSlice } from "features/tasks/tasks.slice";
 import { todolistsSlice } from "features/TodolistsList/todolists.slice";
 import { AnyAction, applyMiddleware, combineReducers } from "redux";
 import thunkMiddleware, { ThunkAction, ThunkDispatch } from "redux-thunk";
