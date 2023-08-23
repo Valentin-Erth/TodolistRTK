@@ -1,9 +1,8 @@
-import { todolistsActions } from "features/TodolistsList/todolists.slice";
-import { TaskPriorities, TaskStatuses, TaskType, todolistsAPI, UpdateTaskModelType } from "api/todolists-api";
-import { AppRootStateType, AppThunk } from "app/store";
+import {  TaskType, todolistsAPI} from "api/todolists-api";
+import { AppRootStateType } from "app/store";
 import { appActions } from "app/app.slice";
 import { handleServerAppError, handleServerNetworkError } from "utils/error-utils";
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
 import { UpdateModelType } from "features/tasks/tasksTypes";
 
@@ -166,18 +165,7 @@ export type ChangeOrderTaskType = {
   newTaskIndex: number
   oldTaskIndex: number
 }
-export type UpdateDomainTaskModelType = {
-  title?: string
-  description?: string
-  status?: TaskStatuses
-  priority?: TaskPriorities
-  startDate?: string
-  deadline?: string
-}
-export type TasksStateType = {
-  [key: string]: Array<TaskType>
-}
 export const tasksActions = slice.actions;
 export const tasksSlice = slice.reducer;
-export const tasksThunks = { fetchTasks };
+export const tasksThunks = { fetchTasks,removeTask,addTask,updateTask,changeOrderTaskTC };
 

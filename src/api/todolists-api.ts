@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { ResponseGetTasksType, UpdateModelType } from "features/tasks/tasksTypes";
 
 const settings = {
     withCredentials: true,
@@ -38,7 +39,7 @@ export const todolistsAPI = {
         return instance.put(`/todo-lists/${todoId}/reorder`, { putAfterItemId })
     },
     getTasks(todolistId: string) {
-        return instance.get<GetTasksResponse>(`todo-lists/${todolistId}/tasks`);
+        return instance.get<ResponseGetTasksType>(`todo-lists/${todolistId}/tasks`);
     },
     deleteTask(todolistId: string, taskId: string) {
         return instance.delete<ResponseType>(`todo-lists/${todolistId}/tasks/${taskId}`);
@@ -46,7 +47,7 @@ export const todolistsAPI = {
     createTask(todolistId: string, taskTitile: string) {
         return instance.post<ResponseType<{ item: TaskType}>>(`todo-lists/${todolistId}/tasks`, {title: taskTitile});
     },
-    updateTask(todolistId: string, taskId: string, model: UpdateTaskModelType) {
+    updateTask(todolistId: string, taskId: string, model: UpdateModelType) {
         return instance.put<ResponseType<{ item:TaskType }>>(`todo-lists/${todolistId}/tasks/${taskId}`, model);
     },
     reorderTask(todoId: string, taskId: string, putAfterItemId: string | null) {

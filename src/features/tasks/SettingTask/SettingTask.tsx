@@ -18,7 +18,7 @@ import {
   TaskTitle, TextAreaSetting,
   TitleWrapper
 } from "./styled/styled";
-import { removeTask } from "features/tasks/tasks.slice";
+import { removeTask, updateTask } from "features/tasks/tasks.slice";
 import { TaskPriorities, TaskType } from "features/tasks/tasksTypes";
 
 type PropsType = {
@@ -104,7 +104,3 @@ export const SettingTask = ({ task, closeEditMode }: PropsType) => {
     </FormWrapper>
   )
 }
-function updateTask(arg0: { todoId: any; taskId: any; model: FormData; }): any {
-    throw new Error('Function not implemented.');
-}
-
