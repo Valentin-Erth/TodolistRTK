@@ -1,10 +1,12 @@
 import { TaskType, todolistsAPI } from "api/todolists-api";
-import { AppRootStateType } from "app/store";
+import { AppDispatch, AppRootStateType } from "app/store";
 import { appActions } from "app/app.slice";
 import { handleServerAppError, handleServerNetworkError } from "utils/error-utils";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
 import { UpdateModelType } from "features/tasks/tasksTypes";
+import { useAppDispatch } from "common/hooks/useAppDispatch";
+import { createAppAsyncThunk } from "common/utils/creat-app-async-thunk";
 
 // const initialState: TasksStateType = {};
 const slice = createSlice({
@@ -48,11 +50,11 @@ const slice = createSlice({
 });
 
 // thunks
-export const fetchTasks = createAsyncThunk("tasks/fetchTasks", async (todolistId: string, thunkAPI) => {
+export const fetchTasks = createAppAsyncThunk<{ tasks: TaskType[], todolistId: string }, string>("tasks/fetchTasks", async (todolistId, thunkAPI) => {
   const { dispatch, rejectWithValue } = thunkAPI;
   dispatch(appActions.setAppStatus({ status: "loading" }));
   try {
-    const res = await todolistsAPI.getTasks("todolistId");
+    const res = await todolistsAPI.getTasks(todolistId);
     const tasks = res.data.items;
     dispatch(appActions.setAppStatus({ status: "succeeded" }));
     return { tasks, todolistId };
