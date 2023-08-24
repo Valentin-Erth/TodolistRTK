@@ -80,7 +80,7 @@ export const removeTask = createAsyncThunk("tasks/removeTask", async (arg: {
       handleServerAppError(res.data, dispatch);
     }
   } catch (error) {
-    handleServerNetworkError(error as AxiosError, dispatch);
+    handleServerNetworkError(error, dispatch);
     return rejectWithValue(null);
   }
 
