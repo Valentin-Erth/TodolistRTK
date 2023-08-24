@@ -5,8 +5,8 @@ import { ErrorSnackbar } from "components/ErrorSnackbar/ErrorSnackbar";
 import { useSelector } from "react-redux";
 import { appActions, appThunks } from "app/app.slice";
 import {
-    CircularProgress,LinearProgress
-  } from "@mui/material";
+  CircularProgress, LinearProgress
+} from "@mui/material";
 import { selectIsInitialized, selectStatus, themeSelector } from "app/app.selectors";
 import { selectIsLoggedIn } from "features/Login/auth.selectors";
 import { darkTheme, lightTheme } from "common/theme/theme";
@@ -14,6 +14,7 @@ import { loadTheme } from "common/utils/localStorage-utils";
 import { Pages } from "Pages";
 import { useAppDispatch } from "common/hooks/useAppDispatch";
 import { LinerProgress } from "components/LinerProgress/LinerProgress";
+import { ProgressWrapper } from "app/styled";
 
 type PropsType = {
   demo?: boolean;
@@ -25,7 +26,7 @@ function App({ demo = false }: PropsType) {
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const theme = useSelector(themeSelector);
   const currentTheme = theme === "light" ? lightTheme : darkTheme;
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
   useLayoutEffect(() => {
     dispatch(appActions.setTheme(loadTheme()));
@@ -35,7 +36,7 @@ function App({ demo = false }: PropsType) {
     dispatch(appThunks.initializeApp());
   }, []);
 
-    if (!isInitialized) {
+  if (!isInitialized) {
     return (
       <div
         style={{
@@ -52,7 +53,9 @@ function App({ demo = false }: PropsType) {
 
   return (
     <ThemeProvider theme={currentTheme}>
-      {status === "loading" && <LinearProgress />}
+      <ProgressWrapper>
+        {status === "loading" && <LinearProgress />}
+      </ProgressWrapper>
       <Pages />
       <ErrorSnackbar />
     </ThemeProvider>
