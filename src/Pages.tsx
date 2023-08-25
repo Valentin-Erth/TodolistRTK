@@ -1,11 +1,11 @@
 import { Layout } from "common/hoc/Layout";
 import React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { NotSelectTodo } from "features/TodolistsList/NotSelectTodo/NotSelectTodo";
+import { NotSelectTodo } from "features/TodolistsList/ui/NotSelectTodo/NotSelectTodo";
 
-import { NotFound } from "components";
-import { Tasks } from "features/tasks/Tasks";
-import { Login } from "features/Login/Login";
+import { NotFound } from "common/components";
+import { Tasks } from "features/Tasks/ui/Tasks";
+import { Login } from "features/Login/ui/Login";
 
 export const PATH = {
   TASK_LIST: '/todos/:todoId/*',

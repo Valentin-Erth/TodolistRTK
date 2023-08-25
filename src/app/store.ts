@@ -1,9 +1,9 @@
-import { tasksSlice } from "features/tasks/tasks.slice";
-import { todolistsSlice } from "features/TodolistsList/todolists.slice";
+import { tasksSlice } from "features/Tasks/model/tasks.slice";
+import { todolistsSlice } from "features/TodolistsList/model/todolists.slice";
 import { AnyAction, applyMiddleware, combineReducers } from "redux";
 import thunkMiddleware, { ThunkAction, ThunkDispatch } from "redux-thunk";
 import { appSlice } from "app/app.slice";
-import { authSlice } from "features/Login/auth.slice";
+import { authSlice } from "features/Login/model/auth.slice";
 import { configureStore } from "@reduxjs/toolkit";
 import { saveTheme } from "common/utils/localStorage-utils";
 

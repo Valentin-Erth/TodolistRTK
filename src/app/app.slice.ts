@@ -1,8 +1,8 @@
-import { authActions } from "features/Login/auth.slice";
+import { authActions } from "features/Login/model/auth.slice";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { handleServerNetworkError } from "common/utils/error-utils";
 import { AxiosError } from "axios";
-import { authAPI } from "features/Login/auth.api";
+import { authAPI } from "features/Login/api/auth.api";
 
 // const initialState = {
 //   status: "idle" as RequestStatusType,

@@ -1,19 +1,19 @@
 import React, { useEffect, useLayoutEffect } from "react";
 import "./App.css";
 import { ThemeProvider } from "styled-components";
-import { ErrorSnackbar } from "components/ErrorSnackbar/ErrorSnackbar";
+import { ErrorSnackbar } from "common/components/ErrorSnackbar/ErrorSnackbar";
 import { useSelector } from "react-redux";
 import { appActions, appThunks } from "app/app.slice";
 import {
   CircularProgress, LinearProgress
 } from "@mui/material";
 import { selectIsInitialized, selectStatus, themeSelector } from "app/app.selectors";
-import { selectIsLoggedIn } from "features/Login/auth.selectors";
+import { selectIsLoggedIn } from "features/Login/model/auth.selectors";
 import { darkTheme, lightTheme } from "common/theme/theme";
 import { loadTheme } from "common/utils/localStorage-utils";
 import { Pages } from "Pages";
 import { useAppDispatch } from "common/hooks/useAppDispatch";
-import { LinerProgress } from "components/LinerProgress/LinerProgress";
+import { LinerProgress } from "common/components/LinerProgress/LinerProgress";
 import { ProgressWrapper } from "app/styled";
 
 type PropsType = {
