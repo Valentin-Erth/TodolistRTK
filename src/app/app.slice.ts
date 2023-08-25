@@ -2,7 +2,7 @@ import { authAPI } from "api/todolists-api";
 import { authActions } from "features/Login/auth.slice";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppThunk } from "./store";
-import { handleServerNetworkError } from "utils/error-utils";
+import { handleServerNetworkError } from "common/utils/error-utils";
 import { AxiosError } from "axios";
 
 // const initialState = {

@@ -1,12 +1,11 @@
 import { todolistsAPI } from "api/todolists-api";
 import { AppDispatch, AppRootStateType } from "app/store";
 import { appActions } from "app/app.slice";
-import { handleServerAppError, handleServerNetworkError } from "utils/error-utils";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
 import { TaskType, UpdateModelType } from "features/tasks/tasksTypes";
-import { useAppDispatch } from "common/hooks/useAppDispatch";
-import { createAppAsyncThunk } from "common/utils/creat-app-async-thunk";
+import { createAppAsyncThunk, handleServerAppError, handleServerNetworkError } from "common/utils";
+
 
 // const initialState: TasksStateType = {};
 const slice = createSlice({
@@ -65,10 +64,10 @@ export const fetchTasks = createAppAsyncThunk<{ tasks: TaskType[], todolistId: s
 
 
 });
-export const removeTask = createAsyncThunk("tasks/removeTask", async (arg: {
+export const removeTask = createAppAsyncThunk<string,{
   taskId: string,
   todolistId: string
-}, thunkAPI) => {
+}>("tasks/removeTask", async (arg, thunkAPI) => {
   const { dispatch, rejectWithValue } = thunkAPI;
   dispatch(appActions.setAppStatus({ status: "loading" }));
   try {
@@ -78,6 +77,7 @@ export const removeTask = createAsyncThunk("tasks/removeTask", async (arg: {
       return arg.taskId;
     } else {
       handleServerAppError(res.data, dispatch);
+      return rejectWithValue(null);
     }
   } catch (error) {
     handleServerNetworkError(error, dispatch);
@@ -166,7 +166,6 @@ export const changeOrderTaskTC = createAsyncThunk(
       return data;
     } catch (e) {
       handleServerNetworkError(e as AxiosError, dispatch);
-
       return rejectWithValue(null);
     }
   }

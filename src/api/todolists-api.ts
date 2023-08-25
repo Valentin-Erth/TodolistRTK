@@ -61,13 +61,6 @@ export const todolistsAPI = {
 }
 
 
-export type LoginParamsType = {
-    email: string
-    password: string
-    rememberMe?: boolean
-    captcha?: string
-}
-
 export const authAPI = {
     login(data: LoginParamsType) {
         const promise = instance.post<ResponseType<{userId?: number}>>('auth/login', data);
@@ -84,6 +77,12 @@ export const authAPI = {
 }
 
 // types
+export type LoginParamsType = {
+    email: string
+    password: string
+    rememberMe?: boolean
+    captcha?: string
+}
 export type TodolistType = {
     id: string
     title: string
@@ -95,11 +94,11 @@ export type ResponseType<D = {}> = {
     messages: Array<string>
     data: D
 }
-export enum TaskStatuses {
-    New = 0,
-    InProgress = 1,
-    Completed = 2,
-}
+export const TaskStatuses= {
+    New : 0,
+    InProgress : 1,
+    Completed : 2,
+} as const
 export enum TaskPriorities {
     Low = 1,
     Medium = 2,
@@ -109,7 +108,7 @@ export type TaskType = {
     description: string
     title: string
     completed: boolean
-    status: TaskStatuses
+    status:typeof TaskStatuses
     priority: TaskPriorities
     startDate: string
     deadline: string
@@ -121,7 +120,7 @@ export type TaskType = {
 export type UpdateTaskModelType = {
     title: string
     description: string
-    status: TaskStatuses
+    status: typeof TaskStatuses
     priority: TaskPriorities
     startDate: string
     deadline: string

@@ -1,8 +1,8 @@
-export enum TaskStatuses {
-  New = 0,
-  InProgress = 1,
-  Completed = 2,
-}
+export const TaskStatuses= {
+  New : 0,
+  InProgress : 1,
+  Completed : 2,
+} as const
 
 export enum TaskPriorities {
   Low = 1,
@@ -14,7 +14,7 @@ export type TaskType = {
   description: string
   title: string
   completed: boolean
-  status: TaskStatuses
+  status:typeof TaskStatuses
   priority: TaskPriorities
   startDate: string
   deadline: string
@@ -34,7 +34,7 @@ export type UpdateModelType = {
   title: string
   description: string
   completed: boolean
-  status: number
+  status: number | typeof TaskStatuses
   priority: number
   startDate: string
   deadline: string

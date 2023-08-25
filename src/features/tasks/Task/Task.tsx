@@ -45,7 +45,7 @@ export const Task = ({ task, openEditMode }: PropsType) => {
         <Checkbox
           id={task.id}
           disabled={false}
-          checked={task.status === TaskStatuses.Completed}
+          checked={task.status.Completed === TaskStatuses.Completed}
           onChange={handlerChangeChecked}
         />
         <TaskTitle>{task.title}</TaskTitle>
