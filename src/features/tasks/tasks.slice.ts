@@ -1,10 +1,10 @@
-import { TaskType, todolistsAPI } from "api/todolists-api";
+import { todolistsAPI } from "api/todolists-api";
 import { AppDispatch, AppRootStateType } from "app/store";
 import { appActions } from "app/app.slice";
 import { handleServerAppError, handleServerNetworkError } from "utils/error-utils";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
-import { UpdateModelType } from "features/tasks/tasksTypes";
+import { TaskType, UpdateModelType } from "features/tasks/tasksTypes";
 import { useAppDispatch } from "common/hooks/useAppDispatch";
 import { createAppAsyncThunk } from "common/utils/creat-app-async-thunk";
 
@@ -59,7 +59,7 @@ export const fetchTasks = createAppAsyncThunk<{ tasks: TaskType[], todolistId: s
     dispatch(appActions.setAppStatus({ status: "succeeded" }));
     return { tasks, todolistId };
   } catch (e) {
-    handleServerNetworkError(e as AxiosError, dispatch)
+    handleServerNetworkError(e as AxiosError, dispatch);
     return rejectWithValue(null);
   }
 
@@ -86,7 +86,7 @@ export const removeTask = createAsyncThunk("tasks/removeTask", async (arg: {
 
 });
 
-export const addTask = createAsyncThunk("tasks/addTask", async (data: { todoId: string; title: string }, {
+export const addTask = createAppAsyncThunk<TaskType, { todoId: string; title: string }>("tasks/addTask", async (data, {
   dispatch,
   rejectWithValue
 }) => {
@@ -94,10 +94,12 @@ export const addTask = createAsyncThunk("tasks/addTask", async (data: { todoId: 
   try {
     const res = await todolistsAPI.createTask(data.todoId, data.title);
     if (res.data.resultCode === 0) {
+      const task = res.data.data.item;
       dispatch(appActions.setAppStatus({ status: "succeeded" }));
-      return res.data.data.item;
+      return task;
     } else {
       handleServerAppError(res.data, dispatch);
+      return rejectWithValue(null);
     }
   } catch (e) {
     handleServerNetworkError(e as AxiosError, dispatch);
@@ -105,15 +107,19 @@ export const addTask = createAsyncThunk("tasks/addTask", async (data: { todoId: 
   }
 });
 
-export const updateTask = createAsyncThunk("tasks/updateTask", async (data: UpdateTaskType, {
+export const updateTask = createAppAsyncThunk<TaskType, UpdateTaskType>("tasks/updateTask", async (data, {
   dispatch,
   getState,
   rejectWithValue
 }) => {
   dispatch(appActions.setAppStatus({ status: "loading" }));
-  const { tasks } = getState() as AppRootStateType;
-  const task = tasks.taskList.find(el => el.id === data.taskId);
-  if (task) {
+  try {
+    const { tasks } = getState();
+    const task = tasks.taskList.find(el => el.id === data.taskId);
+    if (!task) {
+      dispatch(appActions.setAppError({ error: "Task not found" }));
+      return rejectWithValue(null);
+    }
     const model: UpdateModelType = {
       title: task.title,
       status: task.status,
@@ -124,22 +130,22 @@ export const updateTask = createAsyncThunk("tasks/updateTask", async (data: Upda
       completed: task.completed,
       ...data.model
     };
-    try {
-      const res = await todolistsAPI.updateTask(data.todoId, data.taskId, model);
 
-      if (res.data.resultCode === 0) {
-        dispatch(appActions.setAppStatus({ status: "succeeded" }));
+    const res = await todolistsAPI.updateTask(data.todoId, data.taskId, model);
 
-        return res.data.data.item;
-      } else {
-        handleServerAppError(res.data, dispatch);
-      }
-    } catch (e) {
-      handleServerNetworkError(e as AxiosError, dispatch);
-
+    if (res.data.resultCode === 0) {
+      dispatch(appActions.setAppStatus({ status: "succeeded" }));
+      const task = res.data.data.item;
+      return task;
+    } else {
+      handleServerAppError(res.data, dispatch);
       return rejectWithValue(null);
     }
+  } catch (e) {
+    handleServerNetworkError(e as AxiosError, dispatch);
+    return rejectWithValue(null);
   }
+
 });
 
 export const changeOrderTaskTC = createAsyncThunk(

@@ -35,7 +35,7 @@ const validateSchema = {
 export const Tasks = () => {
   const { todoId } = useParams()
   const tasks = useAppSelector(selectTasks)
-  console.log('tasks',tasks);
+  // console.log('tasks',tasks);
   const todo = useAppSelector(selectTodolists).find(el => el.id === todoId)
   const dispatch = useAppDispatch()
   const {
