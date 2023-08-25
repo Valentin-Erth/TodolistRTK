@@ -1,10 +1,10 @@
-import { todolistsAPI } from "api/todolists-api";
-import { AppDispatch, AppRootStateType } from "app/store";
+import { AppRootStateType } from "app/store";
 import { appActions } from "app/app.slice";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
 import { TaskType, UpdateModelType } from "features/tasks/tasksTypes";
 import { createAppAsyncThunk, handleServerAppError, handleServerNetworkError } from "common/utils";
+import { tasksAPI } from "features/tasks/tasks.api";
 
 
 // const initialState: TasksStateType = {};
@@ -53,7 +53,7 @@ export const fetchTasks = createAppAsyncThunk<{ tasks: TaskType[], todolistId: s
   const { dispatch, rejectWithValue } = thunkAPI;
   dispatch(appActions.setAppStatus({ status: "loading" }));
   try {
-    const res = await todolistsAPI.getTasks(todolistId);
+    const res = await tasksAPI.getTasks(todolistId);
     const tasks = res.data.items;
     dispatch(appActions.setAppStatus({ status: "succeeded" }));
     return { tasks, todolistId };
@@ -71,7 +71,7 @@ export const removeTask = createAppAsyncThunk<string,{
   const { dispatch, rejectWithValue } = thunkAPI;
   dispatch(appActions.setAppStatus({ status: "loading" }));
   try {
-    const res = await todolistsAPI.deleteTask(arg.todolistId, arg.taskId);
+    const res = await tasksAPI.deleteTask(arg.todolistId, arg.taskId);
     if (res.data.resultCode === 0) {
       dispatch(appActions.setAppStatus({ status: "succeeded" }));
       return arg.taskId;
@@ -92,7 +92,7 @@ export const addTask = createAppAsyncThunk<TaskType, { todoId: string; title: st
 }) => {
   dispatch(appActions.setAppStatus({ status: "loading" }));
   try {
-    const res = await todolistsAPI.createTask(data.todoId, data.title);
+    const res = await tasksAPI.createTask(data.todoId, data.title);
     if (res.data.resultCode === 0) {
       const task = res.data.data.item;
       dispatch(appActions.setAppStatus({ status: "succeeded" }));
@@ -131,7 +131,7 @@ export const updateTask = createAppAsyncThunk<TaskType, UpdateTaskType>("tasks/u
       ...data.model
     };
 
-    const res = await todolistsAPI.updateTask(data.todoId, data.taskId, model);
+    const res = await tasksAPI.updateTask(data.todoId, data.taskId, model);
 
     if (res.data.resultCode === 0) {
       dispatch(appActions.setAppStatus({ status: "succeeded" }));
@@ -154,12 +154,12 @@ export const changeOrderTaskTC = createAsyncThunk(
     dispatch(appActions.setAppStatus({ status: "loading" }));
     try {
       if (data.newTaskIndex === 0) {
-        await todolistsAPI.reorderTask(data.todoId, data.taskId, null);
+        await tasksAPI.reorderTask(data.todoId, data.taskId, null);
       } else {
         const { tasks } = getState() as AppRootStateType;
         const idAfterWhichTask = tasks.taskList[data.newTaskIndex - 1].id;
 
-        await todolistsAPI.reorderTask(data.todoId, data.taskId, idAfterWhichTask);
+        await tasksAPI.reorderTask(data.todoId, data.taskId, idAfterWhichTask);
       }
       dispatch(appActions.setAppStatus({ status: "succeeded" }));
 

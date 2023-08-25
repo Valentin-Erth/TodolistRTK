@@ -1,9 +1,8 @@
-import { authAPI } from "api/todolists-api";
 import { authActions } from "features/Login/auth.slice";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AppThunk } from "./store";
 import { handleServerNetworkError } from "common/utils/error-utils";
 import { AxiosError } from "axios";
+import { authAPI } from "features/Login/auth.api";
 
 // const initialState = {
 //   status: "idle" as RequestStatusType,

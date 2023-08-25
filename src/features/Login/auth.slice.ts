@@ -1,10 +1,9 @@
-import { authAPI, LoginParamsType } from "api/todolists-api";
 import { handleServerAppError, handleServerNetworkError } from "common/utils/error-utils";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AppThunk } from "app/store";
 import { appActions } from "app/app.slice";
 import { AxiosError } from "axios";
-import { todolistsThunks } from "features/TodolistsList/todolists.slice";
+import { authAPI, LoginParamsType } from "features/Login/auth.api";
+
 
 
 const sliceAuth = createSlice({

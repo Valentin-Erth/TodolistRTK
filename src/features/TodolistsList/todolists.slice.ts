@@ -1,9 +1,9 @@
-import { todolistsAPI, TodolistType } from "api/todolists-api";
 import { appActions, RequestStatusType } from "app/app.slice";
 import { handleServerNetworkError } from "common/utils/error-utils";
 import { AppRootStateType, AppThunk } from "app/store";
 import { createAsyncThunk, createSlice, current, PayloadAction } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
+import { todolistsAPI, TodolistType } from "./todolists.api";
 
 const initialState: Array<TodolistDomainType> = [];
 const slice = createSlice({
@@ -55,19 +55,6 @@ const fetchTodolists = createAsyncThunk("todolists/fetchTodolists", async (arg, 
     handleServerNetworkError(error, dispatch);
   }
 });
-// export const _fetchTodolistsTC = (): AppThunk => {
-//   return (dispatch) => {
-//     dispatch(appActions.setAppStatus({ status: "loading" }));
-//     todolistsAPI.getTodolists()
-//       .then((res) => {
-//         dispatch(todolistsActions.setTodolists({todolists: res.data }));
-//         dispatch(appActions.setAppStatus({ status: "succeeded" }));
-//       })
-//       .catch(error => {
-//         handleServerNetworkError(error, dispatch);
-//       });
-//   };
-// };
 export const removeTodolistTC = (todolistId: string): AppThunk => {
   return (dispatch) => {
     //изменим глобальный статус приложения, чтобы вверху полоса побежала

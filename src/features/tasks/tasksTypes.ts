@@ -1,3 +1,9 @@
+
+export type ResponseType<D = {}> = {
+  resultCode: number
+  messages: Array<string>
+  data: D
+}
 export const TaskStatuses= {
   New : 0,
   InProgress : 1,
