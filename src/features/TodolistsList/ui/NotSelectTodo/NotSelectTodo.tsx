@@ -2,7 +2,7 @@ import { ReactComponent as SelectObject } from 'assets/img/select-object.svg'
 import React from 'react'
 import { NotSelectTodoTitle, NotSelectTodoWrapper } from "features/TodolistsList/ui/NotSelectTodo/styled/styled";
 
-export const NotSelectTodo = () => {
+ const NotSelectTodo = () => {
   return (
     <NotSelectTodoWrapper>
       <NotSelectTodoTitle>Select Project</NotSelectTodoTitle>
@@ -10,3 +10,4 @@ export const NotSelectTodo = () => {
     </NotSelectTodoWrapper>
   )
 }
+export default NotSelectTodo

@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { Suspense, useEffect } from 'react'
 
 import { Navigate, Outlet } from 'react-router-dom'
 import { selectStatus } from "app/app.selectors";
@@ -30,7 +30,9 @@ export const Layout = () => {
     <LayoutWrapper>
       <Todolists />
       <MainWrapper>
+        <Suspense fallback={<p>...Loading</p>}>
         <Outlet />
+        </Suspense >
       </MainWrapper>
     </LayoutWrapper>
   )

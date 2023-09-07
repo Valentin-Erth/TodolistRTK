@@ -18,7 +18,7 @@ import {
   TaskTitle, TextAreaSetting,
   TitleWrapper
 } from "features/Tasks/ui/SettingTask/styled/styled";
-import { removeTask, updateTask } from "features/Tasks/model/tasks.slice";
+import { removeTask, tasksThunks } from "features/Tasks/model/tasks.slice";
 import { TaskPriorities, TaskType } from "features/Tasks/api/tasks.types";
 
 type PropsType = {
@@ -55,7 +55,7 @@ export const SettingTask = ({ task, closeEditMode }: PropsType) => {
   }, [task])
 
   const onSubmit = (data: FormData) => {
-    dispatch(updateTask({ todoId: task.todoListId, taskId: task.id, model: data }))
+    dispatch(tasksThunks.updateTask({ todoId: task.todoListId, taskId: task.id, model: data }))
     closeEditMode()
   }
 

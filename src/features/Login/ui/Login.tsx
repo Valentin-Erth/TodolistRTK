@@ -19,7 +19,7 @@ const schema = yup.object({
   email: yup.string().email().required(),
   password: yup.string().max(32).required()
 });
-export const Login = () => {
+export  const Login = () => {
   const dispatch = useAppDispatch();
   const isLoggedIn = useSelector(selectIsLoggedIn);
 

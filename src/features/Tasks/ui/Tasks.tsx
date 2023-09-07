@@ -32,7 +32,7 @@ const validateSchema = {
   maxLength: 90,
 }
 
-export const Tasks = () => {
+const Tasks = () => {
   const { todoId } = useParams()
   const tasks = useAppSelector(selectTasks)
   // console.log('Tasks',Tasks);
@@ -133,3 +133,4 @@ export const Tasks = () => {
     </TasksWrapper>
   )
 }
+export default Tasks

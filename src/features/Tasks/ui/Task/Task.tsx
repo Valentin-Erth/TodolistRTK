@@ -5,7 +5,7 @@ import { nameDate } from 'common/utils/name-date'
 import React from 'react'
 import { Checkbox } from "common/components";
 import { useAppDispatch } from "common/hooks/useAppDispatch";
-import { updateTask } from "features/Tasks/model/tasks.slice";
+import { tasksThunks } from "features/Tasks/model/tasks.slice";
 import { ArrowRight, TaskFlexContainer, TaskPriority, TaskPriorityFlex, TaskTitle } from "features/Tasks/ui/Task/styled/styled";
 import { TaskPriorities, TaskStatuses, TaskType } from "features/Tasks/api/tasks.types";
 
@@ -30,13 +30,14 @@ export const Task = ({ task, openEditMode }: PropsType) => {
 
   const handlerChangeChecked = (e: ChangeEvent<HTMLInputElement>) => {
     const checked = e.currentTarget.checked
+    console.log(checked);
     const payload = {
       todoId: task.todoListId,
       taskId: task.id,
       model: { status: checked ? TaskStatuses.Completed : TaskStatuses.New },
     }
 
-    dispatch(updateTask({taskId: payload.taskId,model: payload.model,todoId: payload.todoId }))
+    dispatch(tasksThunks.updateTask({taskId: payload.taskId,model: payload.model,todoId: payload.todoId }))
   }
 
   return (

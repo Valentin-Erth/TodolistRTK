@@ -5,7 +5,7 @@ import { ReactComponent as NotFoundIcon } from 'assets/img/monster-404.svg'
 import React from 'react'
 import { Button, Wrapper } from "common/components/NotFound/styled";
 
-export const NotFound = () => {
+ const NotFound = () => {
   const navigate = useNavigate()
 
   const handlerGoToHome = () => {
@@ -19,3 +19,4 @@ export const NotFound = () => {
     </Wrapper>
   )
 }
+export default NotFound

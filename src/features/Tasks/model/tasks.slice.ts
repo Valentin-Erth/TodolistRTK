@@ -106,8 +106,7 @@ export const addTask = createAppAsyncThunk<TaskType, { todoId: string; title: st
     return rejectWithValue(null);
   }
 });
-
-export const updateTask = createAppAsyncThunk<TaskType, UpdateTaskType>("Tasks/updateTask", async (data, {
+ const updateTask = createAppAsyncThunk<TaskType, UpdateTaskType>("Tasks/updateTask", async (data, {
   dispatch,
   getState,
   rejectWithValue
