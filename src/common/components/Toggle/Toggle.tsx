@@ -9,10 +9,7 @@ type PropsType = {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void
 }
 export const Toggle = ({ onChange, checked }: PropsType) => {
-  const theme = useSelector(themeSelector);
-  const dispatch = useDispatch<any>();
-
-  return (
+   return (
     <Switch>
       <Input type={"checkbox"} checked={checked} onChange={onChange} />
       <Slider />

@@ -5,6 +5,7 @@ import { createAsyncThunk, createSlice, current, PayloadAction } from "@reduxjs/
 import { AxiosError } from "axios";
 import { todolistsAPI, TodolistType } from "features/TodolistsList/api/todolists.api";
 import { createAppAsyncThunk } from "common/utils";
+import { changeOrderTaskTC } from "features/Tasks/model/tasks.slice";
 
 const slice = createSlice({
   name: "todolists",
@@ -38,7 +39,13 @@ const slice = createSlice({
           const todo = state.todoList.find(el => el.id === action.payload?.id);
           if (todo) todo.title = action.payload.title;
         }
-      });
+      })
+      .addCase(changeOrderTodolistTC.pending, (state, action)=>{
+        const {oldTodoIndex, newTodoIndex}=action.meta.arg
+        const changedTodo = state.todoList[oldTodoIndex]
+        state.todoList.splice(oldTodoIndex, 1)
+        state.todoList.splice(newTodoIndex, 0, changedTodo)
+      })
   }
 });
 

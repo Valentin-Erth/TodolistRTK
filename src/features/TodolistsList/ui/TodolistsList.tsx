@@ -1,8 +1,8 @@
 import React, { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import {
-   changeOrderTodolistTC, ChangeOrderTodoType,
-  } from "features/TodolistsList/model/todolists.slice";
+  changeOrderTodolistTC, ChangeOrderTodoType
+} from "features/TodolistsList/model/todolists.slice";
 import { useAppDispatch } from "common/hooks/useAppDispatch";
 
 import { selectTodolists } from "features/TodolistsList/model/todolist.selectors";
@@ -22,31 +22,30 @@ import { AddTodoModal } from "features/TodolistsList/ui/AddTodoModal/AddTodoModa
 import { authThunks } from "features/Login/model/auth.slice";
 
 
-
-export const Todolists= () => {
+export const Todolists = () => {
   const todolists = useSelector(selectTodolists);
   const themeMode = useSelector(themeSelector);
 
   const dispatch = useAppDispatch();
 
-  const [showModal, setShowModal] = useState(false)
-  const handlerLogOut = () => dispatch(authThunks.logout())
-  const handlerOpenModal = () => setShowModal(true)
+  const [showModal, setShowModal] = useState(false);
+  const handlerLogOut = () => dispatch(authThunks.logout());
+  const handlerOpenModal = () => setShowModal(true);
   const handlerDragEnd = (result: DropResult) => {
-    if (!result.destination) return
+    if (!result.destination) return;
     const payload: ChangeOrderTodoType = {
       todoId: result.draggableId,
       newTodoIndex: result.destination.index,
-      oldTodoIndex: result.source.index,
-    }
+      oldTodoIndex: result.source.index
+    };
 
-    dispatch(changeOrderTodolistTC(payload))
-  }
+    dispatch(changeOrderTodolistTC(payload));
+  };
   const handlerChangeToggle = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.currentTarget.checked
-
-    dispatch(appActions.setTheme(value ? 'dark' : 'light'))
-  }
+    const value = e.currentTarget.checked;
+    // console.log(value);
+    dispatch(appActions.setTheme(value ? "dark" : "light"));
+  };
   const TodosJSX = todolists.map((el, index) => (
     <Draggable key={el.id} draggableId={el.id} index={index}>
       {provided => (
@@ -60,8 +59,7 @@ export const Todolists= () => {
         </LinkWrapper>
       )}
     </Draggable>
-  ))
-
+  ));
 
 
   return <>
@@ -75,7 +73,7 @@ export const Todolists= () => {
         <TodosLinkTitle>Projects</TodosLinkTitle>
 
         <DragDropContext onDragEnd={handlerDragEnd}>
-          <Droppable direction={'vertical'} droppableId={'todoArea'}>
+          <Droppable direction={"vertical"} droppableId={"todoArea"}>
             {provided => (
               <LinkContainer {...provided.droppableProps} ref={provided.innerRef}>
                 {TodosJSX}
@@ -87,7 +85,7 @@ export const Todolists= () => {
 
       <div>
         <FlexWrapper>
-          <Toggle checked={themeMode === 'dark'} onChange={handlerChangeToggle} />
+          <Toggle checked={themeMode === "dark"} onChange={handlerChangeToggle} />
           <ToggleText>{themeMode}</ToggleText>
         </FlexWrapper>
 
@@ -97,7 +95,7 @@ export const Todolists= () => {
         </SignOutButton>
       </div>
     </TodosWrapper>
-    <PortalModal show={showModal} setShow={setShowModal} title={'Add Project'}>
+    <PortalModal show={showModal} setShow={setShowModal} title={"Add Project"}>
       <AddTodoModal setShow={setShowModal} />
     </PortalModal>
   </>;
