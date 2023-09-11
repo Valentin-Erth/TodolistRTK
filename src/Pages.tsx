@@ -1,12 +1,11 @@
 import React, { lazy, Suspense } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 // import { NotSelectTodo } from "features/TodolistsList/ui/NotSelectTodo/NotSelectTodo";
-import { Layout } from "common/hoc/Layout";
 // import { NotFound } from "common/components";
 // import { Tasks } from "features/Tasks/ui/Tasks";
+import { Layout } from "common/hoc/Layout";
 import { Login } from "features/Login/ui/Login";
 const NotSelectTodo = lazy(() => import ("features/TodolistsList/ui/NotSelectTodo/NotSelectTodo"));
-
 const NotFound = lazy(() => import ("common/components/NotFound/NotFound"));
 // const Login = lazy(() => import ("features/Login/ui/Login"));
 const Tasks = lazy(() => import ("features/Tasks/ui/Tasks"));

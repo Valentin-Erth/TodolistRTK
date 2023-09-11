@@ -1,7 +1,6 @@
 import { Suspense, useEffect } from 'react'
 
 import { Navigate, Outlet } from 'react-router-dom'
-import { selectStatus } from "app/app.selectors";
 import { useAppDispatch } from "common/hooks/useAppDispatch";
 import { useSelector } from "react-redux";
 import { LayoutWrapper, MainWrapper } from "common/hoc/styled";
@@ -9,6 +8,7 @@ import { Todolists } from "features/TodolistsList/ui/TodolistsList";
 import React from 'react';
 import { todolistsThunks } from "features/TodolistsList/model/todolists.slice";
 import { selectIsLoggedIn } from "features/Login/model/auth.selectors";
+import { ErrorBoundary } from 'react-error-boundary';
 
 
 export const Layout = () => {
@@ -30,9 +30,12 @@ export const Layout = () => {
     <LayoutWrapper>
       <Todolists />
       <MainWrapper>
-        <Suspense fallback={<p>...Loading</p>}>
-        <Outlet />
-        </Suspense >
+        <ErrorBoundary fallback={<div>Something went wrong</div>}>
+          <Suspense fallback={<p>...Loading</p>}>
+            <Outlet />
+          </Suspense >
+        </ErrorBoundary>
+
       </MainWrapper>
     </LayoutWrapper>
   )
